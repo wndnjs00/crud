@@ -2,11 +2,12 @@ package com.example.crud.controller;
 
 import com.example.crud.model.UserProfile;
 import jakarta.annotation.PostConstruct;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.catalina.User;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 // 컨트롤러 -> 사용자의 API를 처리해줌
@@ -32,6 +33,29 @@ public class UserProfileController {
     // 즉, http://localhost:8080/user/1 => 입력시, API가 호출되도록 만듬
     @GetMapping("/user/{id}")
     public UserProfile getUserProfile(@PathVariable("id") String id){
-        return userMap.get(id);  //미리 정의한 userMap에서 요청한 id에 해당하는 UserProfile의 정보를 가져와서 리턴해주면됨!!
+        return userMap.get(id);  // 미리 정의한 userMap에서, 요청한 id에 해당하는 UserProfile의 정보를 가져와서 리턴해주면됨!! (그냥 UserProfile이라는 객체를 리턴하면 이 객체를 자동으로 JSON형태로 맵핑해서 클라이언트에게 전달해주게됨)
+    }
+
+    // 리스트 전체를 호출하는 API 만들기
+    @GetMapping("/user/all")
+    public List<UserProfile> getUserProfileList(){
+        return new ArrayList<UserProfile>(userMap.values());    // userMap의 3개의 value를 ArrayList로 변환해서 그것을 리턴하게됨
+    }
+
+    // 새로운 데이터를 생성하려면 post방식!
+    // 수정할때도 동일하게 id를 사용해서 수정하도록 만들었음 / id같은것만 putMapping으로 전달하고, 나머지는 @RequestParam을 사용해서 HTTP프로토콜의 파라미터형태로 전달하는것이 일반적임! -> 추가할 id,name,phone,address를 파라미터로 전달받음
+    @PostMapping("/user/{id}")
+    public void postUserProfile(@RequestParam("id") String id, @RequestParam("name") String name, @RequestParam("phone") String phone, @RequestParam("address") String address){
+        UserProfile userProfile = new UserProfile(id, name, phone, address);
+        userMap.put(id, userProfile);   // userMap에 id를 key로하는 userProfile객체를 추가!
+    }
+
+    // 수정하려면 put방식!
+    @PutMapping("/user/{id}")
+    public void putUserProfile(@RequestParam("id") String id, @RequestParam("name") String name, @RequestParam("phone") String phone, @RequestParam("address") String address){
+        UserProfile userProfile = userMap.get(id);  // 기존에 가지고있는 정보에서 사용자 id객체를 찾아서
+        userProfile.setName(name);      // name도 바꾸고(수정하고)
+        userProfile.setPhone(phone);    // phone도 바꾸고(수정하고)
+        userProfile.setAddress(address); // address도 바꿈(수정하고)
     }
 }
