@@ -58,4 +58,10 @@ public class UserProfileController {
         userProfile.setPhone(phone);    // phone도 바꾸고(수정하고)
         userProfile.setAddress(address); // address도 바꿈(수정하고)
     }
+
+    // 삭제하려면 delete방식!
+    @DeleteMapping("/user/{id}")
+    public void deleteUserProfile(@RequestParam("id") String id, @RequestParam("name") String name, @RequestParam("phone") String phone, @RequestParam("address") String address){
+        userMap.remove(id); // userMap에 해당하는 id를 삭제!
+    }
 }
