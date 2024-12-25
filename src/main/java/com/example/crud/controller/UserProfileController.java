@@ -45,7 +45,7 @@ public class UserProfileController {
 
     // 삭제하려면 delete방식!
     @DeleteMapping("/user/{id}")
-    public void deleteUserProfile(@PathVariable("id") String id, @RequestParam("name") String name, @RequestParam("phone") String phone, @RequestParam("address") String address){
+    public void deleteUserProfile(@PathVariable("id") String id){
         mapper.deleteUserProfile(id);
     }
 }
