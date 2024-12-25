@@ -9,7 +9,6 @@ import java.util.List;
 public interface UserProfileMapper {
 
     // 전달된 id를 데이터베이스 테이블에서 조회를해서, UserProfile이라는 객체를 리턴하는 API
-    // getUserProfile API를 호출하면 id를 갖는 사용자정보가 UserPrfile 테이블에서 가져와서 반환이 되는 SQL문
     @Select("SELECT * FROM UserProfile WHERE id = #{id}")
     UserProfile getUserProfile(@Param("id") String id);
 

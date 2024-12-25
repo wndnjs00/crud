@@ -17,8 +17,6 @@ public class UserProfileController {
     }
 
     // id를 인자로 받아서 해당 UserProfile의 정보를 json형태로 전달하는 API를 만들것임
-    // @PathVariable("id")를 지정해서 /user/{id}에 해당하는 id를 id로 인식하고, 그 id를 파라미터로 입력해서 API를 호출하도록 만드는것임
-    // 즉, http://localhost:8080/user/1 => 입력시, API가 호출되도록 만듬
     @GetMapping("/user/{id}")
     public UserProfile getUserProfile(@PathVariable("id") String id){
         return mapper.getUserProfile(id);   // mapper에 정의된 getUserProfile이라는 API를 호출!  // getUserProfile가 실행이되면 얘와 연결된 SQL문이(@Select("SELECT * FROM UserProfile WHERE id = ${id}") 실행이되서 해당되는 id를 갖는 UserProfile의 정보가 객체로 반환이됨 -> 그러면 이걸 JSON형태로 다시 전달하게되는 형태!!!
