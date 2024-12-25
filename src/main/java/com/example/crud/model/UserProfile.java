@@ -1,7 +1,5 @@
 package com.example.crud.model;
 
-// 보통 안드로이드앱에서는 클래스의 멤버들을 public으로 정의하고 외부클래스에서 바로 멤버변수에 접근하는것이 일반적인 관례인데,
-// 서버 애플리케이션을 개발할때는 멤버변수들을 모두 private으로해서 멤버변수에 접근해서 값을 세팅하거나 값을 얻어가기위한 별도의 게터,세터를 만드는것이 일반적인 관례임
 public class UserProfile {
     private String id;
     private String name;
@@ -17,7 +15,6 @@ public class UserProfile {
     }
 
 
-    // 게터,세터가 모든변수에 만들어짐
     // getId, setId를 통해 id라는 멤버변수의 값을 얻어오기도하고,값을 세팅하기도하는 게터,세터
     public String getId() {
         return id;
