@@ -1,26 +1,26 @@
 package com.example.crud.model;
 
+
 public class UserProfile {
-    private String id;
+    private int id;
     private String name;
     private String phone;
     private String address;
 
     // id, name, phone, address를 파라미터로 받아서 해당되는 필드를 채워주는 생성자를 만듬
-    public UserProfile(String id, String name, String phone, String address) {
+    public UserProfile(int id, String name, String phone, String address) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.address = address;
     }
 
-
     // getId, setId를 통해 id라는 멤버변수의 값을 얻어오기도하고,값을 세팅하기도하는 게터,세터
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
