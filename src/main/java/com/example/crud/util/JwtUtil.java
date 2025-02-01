@@ -4,51 +4,106 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Date;
 
-@Component     // Spring의 Bean으로 등록되며, DI(의존성 주입)를 통해 다른 클래스에서 사용됨
-public class JwtUtil {
-    @Value("${jwt.secret}")
-    // application.properties에서 jwt.secret키에 설정된 값을 불러옴 / 토큰의 검증에 사용되는 비밀키
-    private String secret;
-    
-    private final long validityInMilliseconds = 3600000; // 토큰의 유효시간 = 1시간
 
-    // JWT 생성
-    public String createToken(String email) {
-        Claims claims = Jwts.claims().setSubject(email);    // JWT의 Payload를 구성하는 데이터   // setSubject(email)를 통해 토큰의 주체(subject)를 이메일로 설정
-        Date now = new Date();  // now: 토큰 생성 시간
-        Date validity = new Date(now.getTime() + validityInMilliseconds);   // validity: 토큰 만료 시간(생성 시간 + 유효 시간)
+// 토큰 생성,검증,파싱
+@Component
+public class JwtUtil {
+
+    @Value("${jwt.secret}")
+    private String secret;
+
+    private final long ACCESS_TOKEN_VALIDITY = 30 * 60 * 1000; // 30분
+    private final long REFRESH_TOKEN_VALIDITY = 7 * 24 * 60 * 60 * 1000; // 1주일
+
+
+    // Key 객체 생성
+    private Key getSigningKey() {
+        System.out.println("Secret Key Used:" + secret);
+        return new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
+    }
+
+
+    private String createToken(String email, long validity) {
+        Claims claims = Jwts.claims().setSubject(email);    // 이메일 정보 저장
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + validity);
 
         return Jwts.builder()
-            .setClaims(claims)  // 위에서 설정한 클레임(Payload)을 추가
-            .setIssuedAt(now)   // 토큰 생성 시간을 설정
-            .setExpiration(validity)    //토큰 만료 시간을 설정
-            .signWith(SignatureAlgorithm.HS256, secret.getBytes())  // 비밀키와 HMAC SHA-256 알고리즘을 사용하여 서명
-            .compact(); // 토큰을 문자열로 압축하여 반환
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(expiry)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact(); // JWT 생성
     }
 
-    // JWT에서 이메일 추출
+    // Access Token 생성
+    public String createAccessToken(String email) {
+        return createToken(email, ACCESS_TOKEN_VALIDITY);
+    }
+
+    // Refresh Token 생성
+    public String createRefreshToken(String email) {
+        return createToken(email, REFRESH_TOKEN_VALIDITY);
+    }
+
+    // 토큰에서 이메일 추출
     public String getEmailFromToken(String token) {
-        return Jwts.parserBuilder() // JWT 파서를 생성
-            .setSigningKey(secret.getBytes())   // 비밀키를 사용하여 토큰의 서명을 검증
-            .build()
-            .parseClaimsJws(token)  // 입력된 토큰을 파싱하고, 클레임(Payload)을 추출
-            .getBody().getSubject(); // JWT의 subject 필드(이메일)를 반환
+        try {
+            System.out.println("Parsing Token:" +token.trim()); // 추가
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token.trim())
+                    .getBody()
+                    .getSubject();
+        } catch (JwtException e) {
+            System.err.println("JWT 토큰이 유효하지 않음:" + e.getMessage());
+            throw new IllegalArgumentException("JWT 토큰이 유효하지 않습니다:" + e.getMessage());
+        }
     }
 
+    // 토큰의 유효성 검증
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder()    // JWT 파서를 생성
-                .setSigningKey(secret.getBytes()) // 비밀 키를 사용하여 서명을 검증
-                .build()
-                .parseClaimsJws(token); // 토큰을 파싱하여 유효성을 확인 // 만료된 토큰이나 잘못된 서명이 포함된 토큰은 예외를던짐
+            System.out.println("Validating Token:" +token.trim());
+            Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token.trim());
             return true;
-        } catch (JwtException | IllegalArgumentException e) {   // JwtException: 서명이 잘못되었거나 토큰이 만료된 경우 발생   // IllegalArgumentException: 입력된 토큰이 null이거나 비어 있는 경우 발생
+        } catch (JwtException | IllegalArgumentException e) {
+            System.err.println("JWT 검증 실패:" + e.getMessage());
             return false;
         }
+    }
+
+    // Authorization 헤더에서 Bearer Token 추출
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+
+            // Bearer 이후의 토큰부분 추출 및 공백제거
+            String token = bearerToken.substring("Bearer ".length()).trim();
+//            System.out.println("Resolved Token (after trimming):" + token);
+            return token;
+        }
+        return null;
+    }
+
+    // Authorization 헤더 값(String)을 처리하는 오버로딩 메서드 추가
+    public String resolveToken(String authorizationHeader) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring("Bearer ".length()).trim();
+        }
+        return null;
     }
 }
