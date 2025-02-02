@@ -10,10 +10,6 @@ import java.util.UUID;
 // JpaRepository 상속 <객체, id타입>
 public interface AuthRepository extends JpaRepository<User, UUID> {
 
-//    @Query("SELECT u FROM User u WHERE u.uuid_user=:uuid")
-//    Optional<User> findByUuid(UUID uuid);
-
     Optional<User> findByEmail(String email);   // 이메일로 사용자 검색
-
     boolean existsByEmail(String email);        // 이메일 중복 여부 확인
 }
