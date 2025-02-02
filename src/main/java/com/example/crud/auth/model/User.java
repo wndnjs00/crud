@@ -17,8 +17,8 @@ import java.util.UUID;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID) // UUID 값을 자동으로 생성 (Hibernate 5.3이상에서 권장)
-    @Column(name = "id", nullable = false, updatable = false, columnDefinition = "BINARY(16)") // UUID를 BINARY(16)로 설정
-    private UUID id;
+    @Column(name = "uuid", nullable = false, updatable = false, columnDefinition = "BINARY(16)") // UUID를 BINARY(16)로 설정
+    private UUID uuid;
 
     @Column(nullable = false, unique = true)    // 고유 이메일
     private String email;
