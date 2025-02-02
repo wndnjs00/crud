@@ -8,10 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-//@EnableJpaRepositories(basePackages = "com.lodong")
-//@EntityScan(basePackages = "com.lodong")
-//@ConfigurationPropertiesScan(basePackages = "com.lodong")
-//@ComponentScan(basePackages = "com.lodong", lazyInit = true)
 public class CrudApplication {
 
 	public static void main(String[] args) {
