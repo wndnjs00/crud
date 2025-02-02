@@ -3,6 +3,7 @@ package com.example.crud.util;
 import com.example.crud.utils.ApiResponse;
 import com.example.crud.utils.ErrorCode;
 import io.jsonwebtoken.JwtException;
+import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -56,5 +57,13 @@ public class GlobalExceptionHandler {
         logger.error("Exception 발생: {}", ex.getMessage(), ex);
         return ResponseEntity.ok(ApiResponse.error(ErrorCode.INTERNAL_SERVER_ERROR, "서버 에러가 발생했습니다."));
     }
+
+    // Hibernate와 완련 예외 (id를 UUID로 바꾸는 과정)
+    @ExceptionHandler(StaleObjectStateException.class)
+    public ResponseEntity<ApiResponse<String>> handleStaleObjectStateException(StaleObjectStateException ex) {
+        logger.error("StaleObjectStateException 발생: {}", ex.getMessage());
+        return ResponseEntity.ok(ApiResponse.error(ErrorCode.INTERNAL_SERVER_ERROR, "데이터 충돌이 발생했습니다. 다시 시도해주세요."));
+    }
+
 }
 

@@ -1,6 +1,7 @@
 package com.example.crud.auth.model;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
@@ -15,9 +16,9 @@ import java.util.UUID;
 // 데이터베이스와 연동되는 사용자 엔티티 클래스
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT -> DB에서 id값 자동 증가
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID) // UUID 값을 자동으로 생성 (Hibernate 5.3이상에서 권장)
+    @Column(name = "id", nullable = false, updatable = false, columnDefinition = "CHAR(36)") // UUID를 CHAR(36)로 설정
+    private String id;
 
     @Column(nullable = false, unique = true)    // 고유 이메일
     private String email;
