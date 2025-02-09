@@ -23,6 +23,9 @@ public class JwtUtil {
 
     private final long ACCESS_TOKEN_VALIDITY = 30 * 60 * 1000; // 30분
     private final long REFRESH_TOKEN_VALIDITY = 7 * 24 * 60 * 60 * 1000; // 1주일
+//    private final long ACCESS_TOKEN_VALIDITY = 60 * 1000; // 1분 - 테스트용
+//    private final long REFRESH_TOKEN_VALIDITY = 60 * 1000; // 1분 - 테스트용
+
 
 
     // Key 객체 생성
@@ -82,7 +85,7 @@ public class JwtUtil {
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             System.err.println("JWT 검증 실패:" + e.getMessage());
-            return false;
+            throw new JwtException("유효하지 않은 JWT 토큰입니다.");
         }
     }
 

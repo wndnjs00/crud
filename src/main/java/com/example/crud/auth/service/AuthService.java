@@ -6,6 +6,7 @@ import com.example.crud.auth.dto.UserResponseDto;
 import com.example.crud.auth.model.User;
 import com.example.crud.auth.repository.AuthRepository;
 import com.example.crud.util.JwtUtil;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -81,31 +82,38 @@ public class AuthService {
 
     // 토큰 재발급 로직
     // Refresh Token이 유효한 경우, 새로운 Access Token과 Refresh Token을 재발급
-    public Map<String, Object> refreshTokens(String refreshToken){
+    public Map<String, Object> refreshTokens(String refreshToken) {
 
-        /* Refresh Token validation (유효성 검사) */
-        if (!jwtUtil.validateToken(refreshToken)){
-            throw new IllegalArgumentException("Refresh Token이 만료되었습니다.");
+        try {
+            /* Refresh Token validation (유효성 검사) */
+            if (!jwtUtil.validateToken(refreshToken)) {
+                throw new IllegalArgumentException("Refresh Token이 만료되었습니다.");
+            }
+
+            /* Refresh Token으로 사용자 검색 */
+            User user = authRepository.findByRefreshToken(refreshToken)
+                    .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 Refresh Token입니다."));
+
+            /* 새로운 토큰 생성 */
+            /* 새로운 accessToken, refreshToken 생성 */
+            String newAccessToken = jwtUtil.createAccessToken(user.getEmail());
+            String newRefreshToken = jwtUtil.createRefreshToken(user.getEmail());
+
+            /* 새로운 Refresh Token 저장 */
+            user.setRefreshToken(newRefreshToken);
+            authRepository.save(user);  // Refresh Token을 DB에 저장 (새로운 Refresh Token으로 갱신)
+
+            /* 응답 데이터 구성 */
+            Map<String, Object> response = new HashMap<>();
+            response.put("accessToken", newAccessToken);
+            response.put("refreshToken", newRefreshToken);
+            return response;
+
+        } catch (JwtException e) {
+            throw new IllegalArgumentException("유효하지 않은 Refresh Token입니다."); // 형식적으로 잘못된 토큰
+        } catch (IllegalArgumentException e) {
+            throw e; // "Refresh Token이 만료되었습니다." 메시지 처리
         }
-
-        /* Refresh Token으로 사용자 검색 */
-        User user = authRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 Refresh Token입니다."));
-
-        /* 새로운 토큰 생성 */
-        /* 새로운 accessToken, refreshToken 생성 */
-        String newAccessToken = jwtUtil.createAccessToken(user.getEmail());
-        String newRefreshToken = jwtUtil.createRefreshToken(user.getEmail());
-
-        /* 새로운 Refresh Token 저장 */
-        user.setRefreshToken(newRefreshToken);
-        authRepository.save(user);  // Refresh Token을 DB에 저장 (새로운 Refresh Token으로 갱신)
-
-        /* 응답 데이터 구성 */
-        Map<String, Object> response = new HashMap<>();
-        response.put("accessToken", newAccessToken);
-        response.put("refreshToken", newRefreshToken);
-        return response;
     }
 
 
