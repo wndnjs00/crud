@@ -9,6 +9,7 @@ public enum SuccessCode {
     DELETE_SUCCESS(200, "G02", "success.delete"),
     INSERT_SUCCESS(201, "G03", "success.insert"),
     UPDATE_SUCCESS(200, "G04", "success.update"),
+    REFRESH_TOKEN_SUCCESS(200, "G08", "success.refreshToken"),
     LOGIN_SUCCESS(200, "G05", "success.login"),
     SIGNUP_SUCCESS(201, "G06", "success.signup"),
     LOGOUT_SUCCESS(200, "G07", "success.logout");

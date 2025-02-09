@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     // NoSuchElementException 처리
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<ApiResponse<String>> handleNoSuchElementException(NoSuchElementException ex) {
-        return ResponseEntity.ok(ApiResponse.error(ErrorCode.NO_SUCH_USER_ERROR, "존재하지 않는 사용자입니다."));
+        return ResponseEntity .ok(ApiResponse.error(ErrorCode.NO_SUCH_USER_ERROR, "존재하지 않는 사용자입니다."));
     }
 
 

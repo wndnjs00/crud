@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 
-// 사용자 요청을 처리하고 응답을 반환하는 컨트롤러
+// 사용자 요청을 처리하고 응답을 반환하는 컨트롤러  (컨트롤러는 데이터흐름제어에만 집중 -> 비지니스로직처리는 서비스 계층에서 처리)
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -51,4 +51,27 @@ public class AuthController {
         UserResponseDto userInfo = authService.getUserInfo(token);
         return ResponseEntity.ok(userInfo); // 사용자 정보 반환
     }
+
+    // AccessToken 만료시, Refresh Token을 사용해 토큰갱신
+    // 토큰 재발급 API
+    @PostMapping("/refresh")
+    public ApiResponse<Map<String, Object>> refreshTokens(@RequestBody Map<String, String> request){
+        String refreshToken = request.get("refreshToken");
+
+        Map<String, Object> response = authService.refreshTokens(refreshToken);
+        return ApiResponse.success(SuccessCode.REFRESH_TOKEN_SUCCESS, response);
+    }
+
+    // 로그아웃 API
+     @PostMapping("/logout")
+    public ApiResponse<?> logoutUser(@RequestHeader("Authorization") String authorizationHeader) {
+         // Bearer 제거 후 순수 토큰 추출
+        String token = jwtUtil.resolveToken(authorizationHeader);
+         // 토큰에서 이메일 추출
+        String email = jwtUtil.getEmailFromToken(token);
+
+        // 로그아웃 처리(Refresh Token을 DB에서 삭제)
+        authService.logoutUser(email);
+        return ApiResponse.success(SuccessCode.LOGOUT_SUCCESS);
+     }
 }

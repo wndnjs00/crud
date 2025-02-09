@@ -67,11 +67,56 @@ public class AuthService {
         String accessToken = jwtUtil.createAccessToken(user.getEmail());
         String refreshToken = jwtUtil.createRefreshToken(user.getEmail());
 
+        /* Refresh Token 저장 */
+        user.setRefreshToken(refreshToken);
+        authRepository.save(user); // Refresh Token을 DB에 저장
+
         /* 응답 데이터 구성 */
         Map<String, Object> response = new HashMap<>();
         response.put("accessToken", accessToken);
         response.put("refreshToken", refreshToken);
         return response;
+    }
+
+
+    // 토큰 재발급 로직
+    // Refresh Token이 유효한 경우, 새로운 Access Token과 Refresh Token을 재발급
+    public Map<String, Object> refreshTokens(String refreshToken){
+
+        /* Refresh Token validation (유효성 검사) */
+        if (!jwtUtil.validateToken(refreshToken)){
+            throw new IllegalArgumentException("Refresh Token이 만료되었습니다.");
+        }
+
+        /* Refresh Token으로 사용자 검색 */
+        User user = authRepository.findByRefreshToken(refreshToken)
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 Refresh Token입니다."));
+
+        /* 새로운 토큰 생성 */
+        /* 새로운 accessToken, refreshToken 생성 */
+        String newAccessToken = jwtUtil.createAccessToken(user.getEmail());
+        String newRefreshToken = jwtUtil.createRefreshToken(user.getEmail());
+
+        /* 새로운 Refresh Token 저장 */
+        user.setRefreshToken(newRefreshToken);
+        authRepository.save(user);  // Refresh Token을 DB에 저장 (새로운 Refresh Token으로 갱신)
+
+        /* 응답 데이터 구성 */
+        Map<String, Object> response = new HashMap<>();
+        response.put("accessToken", newAccessToken);
+        response.put("refreshToken", newRefreshToken);
+        return response;
+    }
+
+
+    // 로그아웃 로직
+    public void logoutUser(String email){
+        User user = authRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        /* DB에서 Refresh Token 삭제 */
+        user.setRefreshToken(null);
+        authRepository.save(user);
     }
 
 

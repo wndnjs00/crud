@@ -31,13 +31,14 @@ public class SecurityConfig {
 
 
     // Security 설정
+    // JWT 인증 필터를 추가하고, 특정 엔드포인트에 대한 접근 권한을 정의
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/register", "/auth/login").permitAll() // 회원가입,로그인은 인증없이 접근
+                        .requestMatchers("/auth/register", "/auth/login", "/auth/refresh").permitAll() // 회원가입,로그인, refresh는 인증없이 접근
                         .anyRequest().authenticated() // 나머지는 인증필요
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가

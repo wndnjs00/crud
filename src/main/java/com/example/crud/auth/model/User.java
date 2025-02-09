@@ -34,4 +34,8 @@ public class User {
 
     @Column(nullable = false)
     private String address;
+
+    // Refresh Token 저장필드 추가
+    @Column(name = "refresh_token")
+    private String refreshToken;
 }
