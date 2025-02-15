@@ -1,50 +1,31 @@
-//package com.example.crud.user.model;
-//
-//
-//public class UserProfile {
-//    private int id;
-//    private String name;
-//    private String phone;
-//    private String address;
-//
-//    // id, name, phone, address를 파라미터로 받아서 해당되는 필드를 채워주는 생성자를 만듬
-//    public UserProfile(int id, String name, String phone, String address) {
-//        this.id = id;
-//        this.name = name;
-//        this.phone = phone;
-//        this.address = address;
-//    }
-//
-//    // getId, setId를 통해 id라는 멤버변수의 값을 얻어오기도하고,값을 세팅하기도하는 게터,세터
-//    public int getId() {
-//        return id;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-//
-//    public String getPhone() {
-//        return phone;
-//    }
-//
-//    public void setPhone(String phone) {
-//        this.phone = phone;
-//    }
-//
-//    public String getAddress() {
-//        return address;
-//    }
-//
-//    public void setAddress(String address) {
-//        this.address = address;
-//    }
-//}
+package com.example.crud.user.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.UUID;
+
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@Table(name = "userprofile")    //데이터베이스의 UserProfile 테이블과 매핑
+public class UserProfile {
+
+    @Id     //pk
+    @GeneratedValue(strategy = GenerationType.UUID) // UUID 값을 자동으로 생성
+    @Column(name = "uuid", nullable = false, updatable = false, columnDefinition = "BINARY(16)")
+    private UUID uuid;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String phone;
+
+    @Column(nullable = false)
+    private String address;
+
+}

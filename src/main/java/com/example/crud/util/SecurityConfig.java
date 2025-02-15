@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/register", "/auth/login", "/auth/refresh").permitAll() // 회원가입,로그인, refresh는 인증없이 접근
+                        .requestMatchers("/auth/register", "/auth/login", "/auth/refresh", "/user/**").permitAll() // 회원가입,로그인, refresh, user~경로 는 인증없이 접근
                         .anyRequest().authenticated() // 나머지는 인증필요
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가
