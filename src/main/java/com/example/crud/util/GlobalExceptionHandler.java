@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
         } else if (message.contains("올바르지 않은 요청입니다")) {
             errorCode = ErrorCode.BAD_REQUEST_ERROR;
         } else if (message.contains("Refresh Token이 만료되었습니다")) {
-            errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+            errorCode = ErrorCode.REFRESH_TOKEN_EXPIRED;
         } else if (message.contains("유효하지 않은 Refresh Token입니다")) {
             errorCode = ErrorCode.BAD_REQUEST_ERROR;
         } else {

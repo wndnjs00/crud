@@ -23,12 +23,13 @@ public enum ErrorCode {
     DELETE_ERROR(500, "E004", "error.delete"),
     LOGIN_ERROR(401, "E005", "error.login"),
     SIGNUP_ERROR(400, "E006", "error.signup"),
-    INTERNAL_SERVER_ERROR(500, "E007", "error.internalServer"),
+    REFRESH_TOKEN_EXPIRED(401, "E007", "error.refreshTokenExpired"),
     BAD_REQUEST_ERROR(400, "E008", "error.badRequest"),
     EXIST_EMAIL(400, "E009", "error.existEmail"),
     INVALID_PASSWORD_ERROR(401, "E010", "error.invalidPassword"),
     NO_SUCH_USER_ERROR(404, "E011", "error.noSuchUser"),
-    AUTHENTICATION_ERROR(401, "E012", "error.authenticationFailed");
+    AUTHENTICATION_ERROR(401, "E012", "error.authenticationFailed"),
+    INTERNAL_SERVER_ERROR(500, "E013", "error.internalServer");
 
     private final int status;
     private final String divisionCode;

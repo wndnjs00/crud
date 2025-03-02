@@ -116,6 +116,15 @@ public class AuthService {
         }
     }
 
+    // Refresh Token 만료시, 로그아웃 처리
+    public void handleExpiredRefreshToken(String refreshToken){
+        User user = authRepository.findByRefreshToken(refreshToken)
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 Refresh Token입니다."));
+
+        user.setRefreshToken(null);
+        authRepository.save(user); // Refresh Token 제거
+    }
+
 
     // 로그아웃 로직
     public void logoutUser(String email){
