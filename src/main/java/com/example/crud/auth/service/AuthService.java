@@ -6,6 +6,7 @@ import com.example.crud.auth.dto.UserResponseDto;
 import com.example.crud.auth.model.User;
 import com.example.crud.auth.repository.AuthRepository;
 import com.example.crud.util.JwtUtil;
+import com.example.crud.util.UnauthorizedException;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -92,7 +93,8 @@ public class AuthService {
 
             /* Refresh Token으로 사용자 검색 */
             User user = authRepository.findByRefreshToken(refreshToken)
-                    .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 Refresh Token입니다."));
+                    .orElseThrow(() -> new JwtException("유효하지 않은 Refresh Token입니다."));
+
 
             /* 새로운 토큰 생성 */
             /* 새로운 accessToken, refreshToken 생성 */
@@ -110,9 +112,8 @@ public class AuthService {
             return response;
 
         } catch (JwtException e) {
-            throw new IllegalArgumentException("유효하지 않은 Refresh Token입니다."); // 형식적으로 잘못된 토큰
-        } catch (IllegalArgumentException e) {
-            throw e; // "Refresh Token이 만료되었습니다." 메시지 처리
+            // JWT 관련 예외 발생 시 401 Unauthorized로 처리
+            throw new UnauthorizedException("유효하지 않은 Refresh Token입니다.");
         }
     }
 

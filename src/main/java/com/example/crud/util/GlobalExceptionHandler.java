@@ -50,18 +50,31 @@ public class GlobalExceptionHandler {
     }
 
 
-    // JWT 관련 예외 처리 (JwtException)
+    // JWT 관련 예외 처리
     @ExceptionHandler(JwtException.class)
     public ResponseEntity<ApiResponse<String>> handleJwtException(JwtException ex) {
         logger.error("JwtException 발생: {}", ex.getMessage());
-        return ResponseEntity.ok(ApiResponse.error(ErrorCode.AUTHENTICATION_ERROR, "유효하지 않은 JWT 토큰입니다."));
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.error(ErrorCode.AUTHENTICATION_ERROR, "유효하지 않은 JWT 토큰입니다."));
     }
 
-    // 기타 모든 예외 처리
+    // Custom UnauthorizedException 처리
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ApiResponse<String>> handleUnauthorizedException(UnauthorizedException ex) {
+        logger.error("UnauthorizedException 발생: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.error(ErrorCode.AUTHENTICATION_ERROR, ex.getMessage()));
+    }
+
+    // 기타 예외 처리
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<String>> handleException(Exception ex) {
         logger.error("Exception 발생: {}", ex.getMessage(), ex);
-        return ResponseEntity.ok(ApiResponse.error(ErrorCode.INTERNAL_SERVER_ERROR, "서버 에러가 발생했습니다."));
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ApiResponse.error(ErrorCode.INTERNAL_SERVER_ERROR, "서버 에러가 발생했습니다."));
     }
 
     // Hibernate와 완련 예외 (id를 UUID로 바꾸는 과정)

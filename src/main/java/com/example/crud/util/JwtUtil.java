@@ -69,8 +69,7 @@ public class JwtUtil {
                     .getBody()
                     .getSubject();
         } catch (JwtException e) {
-            System.err.println("JWT 토큰이 유효하지 않음:" + e.getMessage());
-            throw new IllegalArgumentException("JWT 토큰이 유효하지 않습니다:" + e.getMessage());
+            throw new JwtException("유효하지 않은 JWT 토큰입니다.");
         }
     }
 

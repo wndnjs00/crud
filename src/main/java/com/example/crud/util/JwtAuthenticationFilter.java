@@ -50,8 +50,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
             } catch (JwtException e) {
-                // JWT 예외 처리
-                throw new JwtException("유효하지 않은 JWT 토큰입니다."); // 예외를 던져서 GlobalExceptionHandler에서 처리
+                // JWT 검증 실패 시 401 Unauthorized 반환
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("유효하지 않은 JWT 토큰입니다.");
+                return;
             }
         }
         filterChain.doFilter(request, response);
