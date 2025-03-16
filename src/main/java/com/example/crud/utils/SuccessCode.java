@@ -14,7 +14,8 @@ public enum SuccessCode {
     REFRESH_TOKEN_SUCCESS(200, "G06", "success.refreshToken"),
     LOGIN_SUCCESS(200, "G07", "success.login"),
     SIGNUP_SUCCESS(201, "G08", "success.signup"),
-    LOGOUT_SUCCESS(200, "G09", "success.logout");
+    LOGOUT_SUCCESS(200, "G09", "success.logout"),
+    USER_DELETE_SUCCESS(200, "G10", "success.auth.user.delete");
 
 
     private final int status;   // 상태 반환

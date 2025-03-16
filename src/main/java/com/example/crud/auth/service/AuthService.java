@@ -137,8 +137,6 @@ public class AuthService {
         authRepository.save(user);
     }
 
-
-
     // 토큰을 이용해 사용자 정보 조회
     public UserResponseDto getUserInfo(String token) {
         /* JwtUtil을 이용해 토큰에서 이메일 추출 */
@@ -150,5 +148,14 @@ public class AuthService {
 
         /* 사용자 정보 응답 반환 */
         return UserResponseDto.fromEntity(user);
+    }
+
+    // 회원탈퇴
+    public void deleteUser(String email){
+        User user = authRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        // user 데이터 삭제
+        authRepository.delete(user);
     }
 }

@@ -74,4 +74,18 @@ public class AuthController {
         authService.logoutUser(email);
         return ApiResponse.success(SuccessCode.LOGOUT_SUCCESS);
      }
+
+
+     // 회원탈퇴 API
+    @DeleteMapping("/delete")
+    public ApiResponse<?> deleteUser(@RequestHeader("Authorization") String authorizationHeader){
+        // Bearer 제거 후 순수 토큰 추출
+        String token = jwtUtil.resolveToken(authorizationHeader);
+        // 토큰에서 이메일 추출
+        String email = jwtUtil.getEmailFromToken(token);
+
+        // 회원탈퇴 처리
+        authService.deleteUser(email);
+        return ApiResponse.success(SuccessCode.USER_DELETE_SUCCESS);
+    }
 }
