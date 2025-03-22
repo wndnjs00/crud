@@ -28,4 +28,8 @@ public class UserProfile {
     @Column(nullable = false)
     private String address;
 
+    @Lob    //이미지 데이터를 저장할 큰 객체로 지정
+    @Column(name = "profile_image", columnDefinition = "TEXT")
+    private String profileImage;    // Base64로 인코딩된 이미지 데이터
+
 }

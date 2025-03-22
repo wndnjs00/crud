@@ -11,4 +11,5 @@ public class UserProfileRequestDto {
     private String name;
     private String phone;
     private String address;
+    private String profileImage;
 }

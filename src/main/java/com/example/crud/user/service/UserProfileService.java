@@ -23,6 +23,7 @@ public class UserProfileService {
                 .name(requestDto.getName())
                 .phone(requestDto.getPhone())
                 .address(requestDto.getAddress())
+                .profileImage(requestDto.getProfileImage()) // 이미지 데이터 추가
                 .build();
 
         // userProfile 데이터를 db에 저장
@@ -35,6 +36,7 @@ public class UserProfileService {
         userProfile.setName(requestDto.getName());
         userProfile.setPhone(requestDto.getPhone());
         userProfile.setAddress(requestDto.getAddress());
+        userProfile.setProfileImage(requestDto.getProfileImage());
 
         userProfileRepository.save(userProfile);
     }

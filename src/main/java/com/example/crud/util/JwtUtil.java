@@ -21,10 +21,10 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secret;
 
-//    private final long ACCESS_TOKEN_VALIDITY = 30 * 60 * 1000; // 30분
-//    private final long REFRESH_TOKEN_VALIDITY = 7 * 24 * 60 * 60 * 1000; // 1주일
-    private final long ACCESS_TOKEN_VALIDITY = 60 * 1000; // 1분 - 테스트용
-    private final long REFRESH_TOKEN_VALIDITY = 5 * 60 * 1000; // 5분 - 테스트용
+    private final long ACCESS_TOKEN_VALIDITY = 30 * 60 * 1000; // 30분
+    private final long REFRESH_TOKEN_VALIDITY = 7 * 24 * 60 * 60 * 1000; // 1주일
+//    private final long ACCESS_TOKEN_VALIDITY = 60 * 1000; // 1분 - 테스트용
+//    private final long REFRESH_TOKEN_VALIDITY = 5 * 60 * 1000; // 5분 - 테스트용
 
 
 
