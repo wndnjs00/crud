@@ -86,12 +86,9 @@ Spring Boot를 활용한 연락처 REST API 서버
   <div markdown="1">
     <ul>
       <li>회원탈퇴 성공</li>
-      POST -> ????
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      DELETE -> http://localhost:8080/auth/delete
+      <img src="https://github.com/user-attachments/assets/b24d67e3-1d4d-424e-92af-11dd2ea58e43" width=70%>
       <br/><br/>
-      <li>탈퇴한 사용자정보로 로그인 할경우</li>
-      POST -> ????
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
     </ul>
   </div>
 </details>
@@ -117,7 +114,7 @@ Spring Boot를 활용한 연락처 REST API 서버
     <ul>
       <li>uuid로 특정 사용자 조회</li></li>
       GET -> http://localhost:8080/user/uuid
-      <img src= "https://github.com/user-attachments/assets/b4cf5405-790e-44d1-a997-3b0e8fe7713a" width=70%>
+      <img src= "https://github.com/user-attachments/assets/e81eb8a1-a001-4847-9e67-d904f0db0cd0" width=70%>
       <br/><br/>
       <ul>
       <li>존재하지 않는 uuid로 조회한 경우</li>
