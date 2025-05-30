@@ -104,7 +104,7 @@ Spring Boot를 활용한 연락처 REST API 서버
   <div markdown="1">
     <ul>
       <li>전체 데이터 조회</li>
-      <li>GET -> http://localhost:8080/user<li>
+      <li>GET -> http://localhost:8080/user/all<li>
       <img src= "https://github.com/user-attachments/assets/b6cb1966-66d1-4fb8-b745-4d48f8f48c8e" width=70%>
     </ul>
   </div>
@@ -115,21 +115,28 @@ Spring Boot를 활용한 연락처 REST API 서버
   <summary><b>특정 연락처 데이터 조회</b></summary>
   <div markdown="1">
     <ul>
-      <li>uuid로 해당 사용자 조회</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      <li>uuid로 특정 사용자 조회</li></li>
+      GET -> http://localhost:8080/user/uuid
+      <img src= "https://github.com/user-attachments/assets/b4cf5405-790e-44d1-a997-3b0e8fe7713a" width=70%>
+      <br/><br/>
+      <ul>
       <li>존재하지 않는 uuid로 조회한 경우</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      GET -> http://localhost:8080/user/uuid
+      <img src="https://github.com/user-attachments/assets/ea54c46c-cc3b-4f9d-a6d6-9f3a487f5c4b" width=70%>
+      <br/><br/>
     </ul>
   </div>
 </details>
+
 
 <details>
   <summary><b>연락처 데이터 추가</b></summary>
   <div markdown="1">
     <ul>
-      <li>설명</li>
-      <li>설명</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      <li>새로운 연락처데이터 추가</li>
+      POST -> http://localhost:8080/user/new
+      <img src="https://github.com/user-attachments/assets/87567393-705f-40fb-b01d-751bbb5be61e" width=70%>
+      <br/><br/>
     </ul>
   </div>
 </details>
@@ -139,9 +146,11 @@ Spring Boot를 활용한 연락처 REST API 서버
   <summary><b>연락처 데이터 수정</b></summary>
   <div markdown="1">
     <ul>
-      <li>설명</li>
-      <li>설명</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      <li>uuid로 기존 사용자 수정</li>
+      PUT -> http://localhost:8080/user/uuid
+      <br/><br/> 수정할 사용자의 uuid를 입력해서 사용자정보 수정
+      <img src="https://github.com/user-attachments/assets/f9b1a67a-1c27-4bbb-addf-a029338fc286" width=70%>
+      <br/><br/>
     </ul>
   </div>
 </details>
@@ -151,9 +160,10 @@ Spring Boot를 활용한 연락처 REST API 서버
   <summary><b>연락처 데이터 삭제</b></summary>
   <div markdown="1">
     <ul>
-      <li>설명</li>
-      <li>설명</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      <li>uuid로 기존 사용자 삭제</li>
+      DELETE -> http://localhost:8080/user/uuid
+      <img src="https://github.com/user-attachments/assets/61ef4934-a0a7-478f-b5f8-2705b2de48cb" width=70%>
+      <br/><br/>
     </ul>
   </div>
 </details>
