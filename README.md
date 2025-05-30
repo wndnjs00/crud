@@ -16,11 +16,16 @@ Spring Boot를 활용한 연락처 REST API 서버
   <div markdown="1">
     <ul>
       <li>회원가입 성공</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      POST -> http://localhost:8080/auth/register
+      <img src="https://github.com/user-attachments/assets/1cb2cce2-053b-4974-8841-a1c127957d2e" width=70%>
+      <br/><br/>
       <li>이미 존재하는 이메일일 경우</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
-      <li>필수값 누락하여 요청할 경우</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      POST -> http://localhost:8080/auth/register
+      <img src="https://github.com/user-attachments/assets/f25d9ad7-b644-4f1b-8028-68710eee6379" width=70%>
+      <br/><br/>
+      <li>필수값 누락하여 요청할 경우 (email값 누락하여 요청)</li>
+      POST -> http://localhost:8080/auth/register
+      <img src="https://github.com/user-attachments/assets/ac50083d-4e93-4c49-b66f-f7bc035e4476" width=70%>
     </ul>
   </div>
 </details>
@@ -30,19 +35,35 @@ Spring Boot를 활용한 연락처 REST API 서버
   <div markdown="1">
     <ul>
       <li>로그인 성공</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      POST -> http://localhost:8080/auth/login
+      <img src="https://github.com/user-attachments/assets/8446b777-70b1-4840-bb56-f03c915bd78f" width=70%>
+      <br/><br/>
       <li>존재하지 않은 이메일일 경우</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      POST -> http://localhost:8080/auth/login
+      <img src="https://github.com/user-attachments/assets/229dc071-27a8-41cd-8091-a6d643faa914" width=70%>
+      <br/><br/>
       <li>비밀번호가 잘못된 경우</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
-      <li>필수값 누락하여 요청할 경우</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      POST -> http://localhost:8080/auth/login
+      <img src="https://github.com/user-attachments/assets/7ee1948e-caec-4e88-9a80-ccf4edc90338" width=70%>
+      <br/><br/>
+      <li>필수값 누락하여 요청할 경우(email 누락하여 요청)</li>
+      POST -> http://localhost:8080/auth/login
+      <img src="https://github.com/user-attachments/assets/8e491cac-8e7c-4bda-8637-a8af14077cb4" width=70%>
+      <br/><br/>
       <li>올바른 accessToken으로 요청</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      GET -> http://localhost:8080/auth/info
+      <br/><br/> 로그인에서 발급받은 accessToken을 통해 회원정보 조회
+      <img src="https://github.com/user-attachments/assets/e04a0b9b-8dd0-45f2-a214-2a94ba2adc2c" width=70%>
+      <br/><br/>
        <li>올바른 refreshToken으로 요청</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      POST -> http://localhost:8080/auth/refresh
+      <br/><br/> accessToken 만료시, refreshToken으로 재요청
+      <img src="https://github.com/user-attachments/assets/50def57e-d260-4670-8f91-abaf6551ac22" width=70%>
+      <br/><br/>
       <li>만료된 refreshToken으로 요청</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      POST -> http://localhost:8080/auth/refresh
+      <img src="https://github.com/user-attachments/assets/b7068ff1-9fb4-4103-8720-a3a1ee8f7c84" width=70%>
+      <br/><br/>
     </ul>
   </div>
 </details>
@@ -52,18 +73,24 @@ Spring Boot를 활용한 연락처 REST API 서버
   <div markdown="1">
     <ul>
       <li>로그아웃 성공</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      POST -> http://localhost:8080/auth/logout
+      <br/><br/> 로그아웃시, DB에 있는 RefreshToken값 삭제
+      <img src="https://github.com/user-attachments/assets/f2a542d7-067b-4634-94c8-14993fa07f0c" width=70%>
+      <br/><br/>
     </ul>
   </div>
 </details>
-
+      
 <details>
   <summary><b>회원탈퇴</b></summary>
   <div markdown="1">
     <ul>
       <li>회원탈퇴 성공</li>
+      POST -> ????
       <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      <br/><br/>
       <li>탈퇴한 사용자정보로 로그인 할경우</li>
+      POST -> ????
       <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
     </ul>
   </div>
@@ -76,12 +103,13 @@ Spring Boot를 활용한 연락처 REST API 서버
   <summary><b>전체 연락처 데이터 조회</b></summary>
   <div markdown="1">
     <ul>
-      <li>설멸</li>
-      <li>설명</li>
-      <img src="./docs/주요_기능/포토스팟_콜렉션/1.gif" width=70%>
+      <li>전체 데이터 조회</li>
+      <li>GET -> http://localhost:8080/user<li>
+      <img src= "https://github.com/user-attachments/assets/b6cb1966-66d1-4fb8-b745-4d48f8f48c8e" width=70%>
     </ul>
   </div>
 </details>
+      
 
 <details>
   <summary><b>특정 연락처 데이터 조회</b></summary>
