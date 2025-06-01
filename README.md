@@ -1,5 +1,5 @@
 # 📞 연락처 서버
-Spring Boot를 활용한 연락처 REST API 서버
+Spring Boot를 활용한 연락처서버
 <br/>
 ## 💻 개발 환경
 - Version : Java 17
